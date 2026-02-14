@@ -1,0 +1,24 @@
+{
+  "whitelist_domains": [
+    "linkedin.com",
+    "indeed.com",
+    "glassdoor.com",
+    "monster.com",
+    "ziprecruiter.com",
+    "dice.com",
+    "careerbuilder.com",
+    "simplyhired.com"
+  ],
+  "prompts": {
+    "job_search": "Search for {query} jobs in {location}",
+    "application": "Apply to job with resume and cover letter",
+    "data_extraction": "Extract job title, company, location, and description"
+  },
+  "preferences": {
+    "auto_apply": false,
+    "save_searches": true,
+    "notification_email": "",
+    "search_interval_hours": 24
+  },
+  "newsletter_subscriptions": []
+}
