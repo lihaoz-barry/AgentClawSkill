@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Search Automation System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 Job Search Automation System</h1>
+            <p>Automate your job search with AI-powered browser agent</p>
+        </header>
+
+        <div class="dashboard">
+            <!-- Browser Control Panel -->
+            <section class="panel browser-control">
+                <h2>🌐 Browser Control</h2>
+                <div class="status-indicator">
+                    <span class="status-dot" id="browserStatus"></span>
+                    <span id="browserStatusText">Not Running</span>
+                </div>
+                
+                <div class="control-buttons">
+                    <button id="launchBrowser" class="btn btn-primary">Launch Browser (Headed)</button>
+                    <button id="launchHeadless" class="btn btn-secondary">Launch Headless</button>
+                    <button id="toggleVisibility" class="btn btn-secondary" disabled>Toggle Visibility</button>
+                    <button id="closeBrowser" class="btn btn-danger" disabled>Close Browser</button>
+                </div>
+
+                <div class="browser-info" id="browserInfo" style="display: none;">
+                    <p><strong>Mode:</strong> <span id="browserMode">Headed</span></p>
+                    <p><strong>Current URL:</strong> <span id="currentUrl">-</span></p>
+                    <p><strong>Active Sessions:</strong> <span id="sessionCount">0</span></p>
+                </div>
+            </section>
+
+            <!-- Whitelist Management -->
+            <section class="panel whitelist-panel">
+                <h2>✅ Whitelist Domains</h2>
+                <div class="whitelist-controls">
+                    <input type="text" id="newDomain" placeholder="Enter domain (e.g., linkedin.com)">
+                    <button id="addDomain" class="btn btn-primary">Add Domain</button>
+                </div>
+                <ul id="domainList" class="domain-list"></ul>
+            </section>
+
+            <!-- Job Search Panel -->
+            <section class="panel job-search-panel">
+                <h2>💼 Job Search</h2>
+                <div class="search-form">
+                    <input type="text" id="jobQuery" placeholder="Job title or keywords" value="software engineer">
+                    <input type="text" id="jobLocation" placeholder="Location" value="Remote">
+                    <button id="searchJobs" class="btn btn-primary" disabled>Search Jobs</button>
+                </div>
+                <div id="jobResults" class="job-results"></div>
+            </section>
+
+            <!-- Cookie/Session Management -->
+            <section class="panel cookie-panel">
+                <h2>🍪 Cookie Sessions</h2>
+                <button id="viewCookies" class="btn btn-secondary" disabled>View Cookies</button>
+                <div id="cookieDisplay" class="cookie-display"></div>
+            </section>
+
+            <!-- Newsletter Subscription -->
+            <section class="panel newsletter-panel">
+                <h2>📧 Daily Newsletter</h2>
+                <div class="newsletter-form">
+                    <input type="email" id="newsletterEmail" placeholder="Enter your email">
+                    <button id="subscribeNewsletter" class="btn btn-primary">Subscribe</button>
+                </div>
+                <div id="newsletterStatus"></div>
+            </section>
+
+            <!-- Prompt Configuration -->
+            <section class="panel prompt-panel">
+                <h2>⚙️ Prompt Configuration</h2>
+                <div class="prompt-editor">
+                    <label>Job Search Prompt:</label>
+                    <textarea id="jobSearchPrompt" rows="3">Search for {query} jobs in {location}</textarea>
+                    
+                    <label>Application Prompt:</label>
+                    <textarea id="applicationPrompt" rows="3">Apply to job with resume and cover letter</textarea>
+                    
+                    <button id="savePrompts" class="btn btn-primary">Save Prompts</button>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
