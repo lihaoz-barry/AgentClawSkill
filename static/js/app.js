@@ -136,10 +136,16 @@ async function loadWhitelist() {
         result.domains.forEach(domain => {
             const li = document.createElement('li');
             li.className = 'domain-item';
-            li.innerHTML = `
-                <span>${domain}</span>
-                <button onclick="removeDomain('${domain}')">Remove</button>
-            `;
+            
+            const span = document.createElement('span');
+            span.textContent = domain;
+            
+            const button = document.createElement('button');
+            button.textContent = 'Remove';
+            button.onclick = () => removeDomain(domain);
+            
+            li.appendChild(span);
+            li.appendChild(button);
             domainList.appendChild(li);
         });
     }
@@ -202,20 +208,46 @@ function displayJobs(jobs) {
     jobResults.innerHTML = '';
     
     if (jobs.length === 0) {
-        jobResults.innerHTML = '<p style="text-align: center; color: #666;">No jobs found</p>';
+        const noJobs = document.createElement('p');
+        noJobs.style.textAlign = 'center';
+        noJobs.style.color = '#666';
+        noJobs.textContent = 'No jobs found';
+        jobResults.appendChild(noJobs);
         return;
     }
     
     jobs.forEach(job => {
         const jobCard = document.createElement('div');
         jobCard.className = 'job-card';
-        jobCard.innerHTML = `
-            <h3>${job.title}</h3>
-            <p><strong>Company:</strong> ${job.company}</p>
-            <p><strong>Location:</strong> ${job.location}</p>
-            <span class="job-platform">${job.platform}</span>
-            <button onclick="applyToJob('${job.url}')">Apply</button>
-        `;
+        
+        const title = document.createElement('h3');
+        title.textContent = job.title;
+        
+        const companyP = document.createElement('p');
+        const companyStrong = document.createElement('strong');
+        companyStrong.textContent = 'Company: ';
+        companyP.appendChild(companyStrong);
+        companyP.appendChild(document.createTextNode(job.company));
+        
+        const locationP = document.createElement('p');
+        const locationStrong = document.createElement('strong');
+        locationStrong.textContent = 'Location: ';
+        locationP.appendChild(locationStrong);
+        locationP.appendChild(document.createTextNode(job.location));
+        
+        const platform = document.createElement('span');
+        platform.className = 'job-platform';
+        platform.textContent = job.platform;
+        
+        const applyButton = document.createElement('button');
+        applyButton.textContent = 'Apply';
+        applyButton.onclick = () => applyToJob(job.url);
+        
+        jobCard.appendChild(title);
+        jobCard.appendChild(companyP);
+        jobCard.appendChild(locationP);
+        jobCard.appendChild(platform);
+        jobCard.appendChild(applyButton);
         jobResults.appendChild(jobCard);
     });
 }
@@ -244,9 +276,15 @@ document.getElementById('viewCookies').addEventListener('click', async () => {
         const cookieDisplay = document.getElementById('cookieDisplay');
         
         if (result.cookies.length === 0) {
-            cookieDisplay.innerHTML = '<p>No cookies found</p>';
+            const noCookies = document.createElement('p');
+            noCookies.textContent = 'No cookies found';
+            cookieDisplay.innerHTML = '';
+            cookieDisplay.appendChild(noCookies);
         } else {
-            cookieDisplay.innerHTML = '<pre>' + JSON.stringify(result.cookies, null, 2) + '</pre>';
+            const pre = document.createElement('pre');
+            pre.textContent = JSON.stringify(result.cookies, null, 2);
+            cookieDisplay.innerHTML = '';
+            cookieDisplay.appendChild(pre);
         }
         
         showNotification(`Found ${result.cookies.length} cookies`, 'success');

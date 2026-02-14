@@ -116,6 +116,13 @@ class BrowserAgent:
         
         return self.context.cookies()
     
+    def _is_domain_whitelisted(self, domain: str) -> bool:
+        """
+        Helper method to check if a specific domain is whitelisted
+        """
+        whitelist = self.config_manager.get_whitelist()
+        return any(d == domain or d.endswith('.' + domain) for d in whitelist)
+    
     def search_jobs(self, query: str, location: str) -> List[Dict[str, Any]]:
         """
         Search for jobs on whitelisted platforms
@@ -125,15 +132,14 @@ class BrowserAgent:
             raise Exception("Browser not running")
         
         jobs = []
-        whitelist = self.config_manager.get_whitelist()
         
-        # Search on LinkedIn (example)
-        if any('linkedin.com' in domain for domain in whitelist):
+        # Search on LinkedIn (example) - check for exact domain match
+        if self._is_domain_whitelisted('linkedin.com'):
             linkedin_jobs = self._search_linkedin(query, location)
             jobs.extend(linkedin_jobs)
         
-        # Search on Indeed (example)
-        if any('indeed.com' in domain for domain in whitelist):
+        # Search on Indeed (example) - check for exact domain match
+        if self._is_domain_whitelisted('indeed.com'):
             indeed_jobs = self._search_indeed(query, location)
             jobs.extend(indeed_jobs)
         
@@ -240,11 +246,19 @@ class BrowserAgent:
             apply_button = self.page.query_selector('button:has-text("Apply"), a:has-text("Apply")')
             
             if apply_button:
+                # Get the href if it's a link
+                href = apply_button.get_attribute('href')
+                current_url = self.page.url
+                
+                # Use urljoin for safe URL construction
+                from urllib.parse import urljoin
+                final_url = urljoin(current_url, href) if href else current_url
+                
                 # In a real implementation, this would fill out the application
                 return {
                     'success': True,
                     'message': 'Navigated to application page',
-                    'url': self.page.url
+                    'url': final_url
                 }
             else:
                 return {

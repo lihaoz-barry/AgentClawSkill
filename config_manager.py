@@ -85,9 +85,13 @@ class ConfigManager:
         """Check if a URL's domain is whitelisted"""
         from urllib.parse import urlparse
         domain = urlparse(url).netloc
+        # Remove 'www.' prefix if present for comparison
+        if domain.startswith('www.'):
+            domain = domain[4:]
         
         for whitelisted in self.get_whitelist():
-            if whitelisted in domain:
+            # Exact match or subdomain match
+            if domain == whitelisted or domain.endswith('.' + whitelisted):
                 return True
         return False
     

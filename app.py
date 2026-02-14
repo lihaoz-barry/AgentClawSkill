@@ -15,6 +15,14 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY', 'dev-secret-key-change-in-production')
 
+# Warn if using default secret key
+if app.secret_key == 'dev-secret-key-change-in-production':
+    import warnings
+    warnings.warn(
+        "Using default secret key! Please set FLASK_SECRET_KEY in .env for production.",
+        UserWarning
+    )
+
 # Initialize managers
 config_manager = ConfigManager()
 browser_agent = None
