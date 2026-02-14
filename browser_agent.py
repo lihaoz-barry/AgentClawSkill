@@ -101,8 +101,8 @@ class BrowserAgent:
         if self.page:
             try:
                 status['current_url'] = self.page.url
-            except:
-                pass
+            except Exception as e:
+                print(f"Warning: Could not get page URL: {e}")
         
         if self.context:
             status['sessions'] = len(self.context.cookies())
@@ -170,6 +170,7 @@ class BrowserAgent:
                         }
                         jobs.append(job)
                 except Exception as e:
+                    print(f"Error extracting LinkedIn job card: {e}")
                     continue
         
         except Exception as e:
@@ -209,6 +210,7 @@ class BrowserAgent:
                         }
                         jobs.append(job)
                 except Exception as e:
+                    print(f"Error extracting job card: {e}")
                     continue
         
         except Exception as e:
