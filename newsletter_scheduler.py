@@ -62,9 +62,12 @@ def run_scheduler():
     """Run the newsletter scheduler"""
     print("🚀 Starting Newsletter Scheduler")
     print("Newsletter will be sent daily at 9:00 AM (server local time)")
+    print("Note: For production, consider using APScheduler with pytz for timezone-aware scheduling")
     
     # Schedule newsletter for 9 AM daily (server local time)
-    # Note: Consider using timezone-aware scheduling for production
+    # For timezone-aware scheduling in production, consider using:
+    # - APScheduler library with pytz for timezone support
+    # - Example: scheduler.add_job(send_newsletter, 'cron', hour=9, timezone='America/New_York')
     schedule.every().day.at("09:00").do(send_newsletter)
     
     # For testing: also run every hour

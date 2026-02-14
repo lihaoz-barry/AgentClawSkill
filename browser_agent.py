@@ -118,10 +118,12 @@ class BrowserAgent:
     
     def _is_domain_whitelisted(self, domain: str) -> bool:
         """
-        Helper method to check if a specific domain is whitelisted
+        Helper method to check if a specific domain is whitelisted.
+        Delegates to config_manager for consistent domain checking logic.
         """
-        whitelist = self.config_manager.get_whitelist()
-        return any(d == domain or d.endswith('.' + domain) for d in whitelist)
+        # Construct a URL to use the centralized domain checking
+        test_url = f"https://{domain}"
+        return self.config_manager.is_domain_whitelisted(test_url)
     
     def search_jobs(self, query: str, location: str) -> List[Dict[str, Any]]:
         """
